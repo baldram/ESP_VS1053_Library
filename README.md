@@ -1,17 +1,27 @@
 # VS1053 library
 
-This is a library for the generic **[VS1053 Breakout](http://www.vlsi.fi/en/products/vs1053.html)** by VLSI Solution.<br/>
+This is a PlatformIO library for the generic **[VS1053 Breakout](http://www.vlsi.fi/en/products/vs1053.html)** by VLSI Solution.<br/>
 A powerful Ogg Vorbis / MP3 / AAC / WMA / FLAC / MIDI Audio Codec chip.<br/>
 Read more: [http://www.vlsi.fi/en/products/vs1053.html](http://www.vlsi.fi/en/products/vs1053.html).
 
-The library is a great base to build your own webradio player.
+The library may be a base to build your own webradio player or different audio device.
 
 Designed specifically to work with the **Espressif ESP8266** and **ESP32** boards. 
 
-There are currently two methods to program the ESP boards: the ESP-IDF and the ESP8266/ESP32 arduino Core.
+Don't hesitate to create issues or pull requests if you want to improve ESP_VS1053_Library!
+
+## Introduction
+
+#### How to use the library?
+
+There are currently two official methods to program the ESP boards: the ESP-IDF and the ESP8266/ESP32 arduino Core.
 The library was created to work with the **arduino Core**.
- 
+
 The ESP8266 is the most popular Wi-Fi MCU (known also as ESP12, NodeMCU, WeMos, ...). 
+
+#### Why PlatformIO?
+
+As mentioned in first paragraph, the library was prepared to be used with PlatformIO, which is kind of dependency management tool. It is highly recommended environment to be used while developing your electronics/IoT projects. The build automation lets you deal much easier while working with the project. It will help you to have all project dependencies simply resolved out of the box. What more, it provides very good IDE integration (any of popular), debugging possibility, remote unit testing and firmware updates. [Learn more about PlatformIO here](https://platformio.org/).
 
 ## Usage 
 
@@ -46,6 +56,7 @@ player.playChunk(helloMp3, sizeof(helloMp3));
 ```
     
 For complete code please check [examples](https://github.com/baldram/ESP_VS1053_Library/tree/master/examples) folder.
+The example plays the sound like this [(click to listen to the sound)](https://drive.google.com/open?id=1Mm4dc-sM7KjZcKmv5g1nwhe3-qtm7yUl) every three minutes.
 
 Please note that `player.switchToMp3Mode()` is an optional switch. Some of VS1053 modules will start up in MIDI mode. The result is no audio when playing MP3.
 You can modify the board, but there is a more elegant way without soldering. For more details please read a discussion here: [http://www.bajdi.com/lcsoft-vs1053-mp3-module/#comment-33773](http://www.bajdi.com/lcsoft-vs1053-mp3-module/#comment-33773).

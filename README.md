@@ -62,23 +62,26 @@ Please note that `player.switchToMp3Mode()` is an optional switch. Some of VS105
 You can modify the board, but there is a more elegant way without soldering. For more details please read a discussion here: [http://www.bajdi.com/lcsoft-vs1053-mp3-module/#comment-33773](http://www.bajdi.com/lcsoft-vs1053-mp3-module/#comment-33773).
 <br />No side effects for boards which do not need this switch, so you can call it just in case.
 
-#### Third-party dependencies
+#### Logging / debugging
 
-The library use also a third-party logging framework [ArduinoLog](http://platformio.org/lib/show/1532/ArduinoLog/) for debugging purposes.<br /> 
-This dependency will be resolved automatically.
+The library uses ESP Arduino framework built in logger (Arduino core for [ESP32](https://github.com/espressif/arduino-esp32/issues/893#issuecomment-348069135) and [ESP8266](https://github.com/esp8266/Arduino/blob/master/doc/Troubleshooting/debugging.rst#debug-level)).<br /> 
 
-Then you are able to include and use this library from your code (it offers several log levels):
+To see debug messages please add build flag to your `platformio.ini` as below (depending on platform):
+
+- For ESP8266:
+
+`build_flags = -D DEBUG_ESP_PORT=Serial`
+
+- For ESP32:
+
+`build_flags = -DCORE_DEBUG_LEVEL=ARDUHAL_LOG_LEVEL_DEBUG`
+
+The Serial Interface need to be initialized in the `setup()`.
 
 ```
-#include <ArduinoLog.h>
-```
-...
-```
-Serial.begin(9600);
-while(!Serial && !Serial.available()){}
-Log.begin(LOG_LEVEL_VERBOSE, &Serial);
-
-Log.notice("Hello, this is a debug message!");
+void setup() {
+    Serial.begin(115200);
+}
 ```
 
 ## Example wiring

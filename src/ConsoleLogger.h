@@ -1,24 +1,29 @@
-#include "stdio.h"
+/**
+ * Licensed under GNU GPLv3 <http://gplv3.fsf.org/>
+ * Copyright © 2018
+ *
+ * @author Marcin Szalomski (github: @baldram | twitter: @baldram)
+ */
 
-#ifndef __ESP_LOG_H__
+#ifndef __ESP_VS1053_LIBRARY_CONSOLE_LOGGER__
+    #define __ESP_VS1053_LIBRARY_CONSOLE_LOGGER__
 
-#define __ESP_LOG_H__
+    /**
+     * To enable debug, add build flag to your platformio.ini as below (depending on platform).
+     *
+     * For ESP8266:
+     *      build_flags = -D DEBUG_ESP_PORT=Serial
+     *
+     * For ESP32:
+     *      build_flags = -DCORE_DEBUG_LEVEL=ARDUHAL_LOG_LEVEL_DEBUG
+     *
+     */
+    #ifdef ARDUINO_ARCH_ESP32
+        #define LOG(...) ESP_LOGD("ESP_VS1053", __VA_ARGS__)
+    #elif defined(ARDUINO_ARCH_ESP8266) && defined(DEBUG_ESP_PORT)
+        #define LOG(...) DEBUG_ESP_PORT.printf(__VA_ARGS__)
+    #else
+        #define LOG(...)
+    #endif
 
-//#ifndef ESP_PLATFORM // TODO?
-    #include "ArduinoLog.h"
-//#endif
-
-#define DEBUG_BUFFER_SIZE 255
-
-/* Critical errors, software module can not recover on its own */
-void ESP_LOGE(const char* tag, const char *message, ...); // arduinoLog: error
-/* Information messages which describe normal flow of events */
-void ESP_LOGI(const char* tag, const char *message, ...); // arduinoLog: notice
-/* Extra information which is not necessary for normal use (values, pointers, sizes, etc). */
-void ESP_LOGD(const char* tag, const char *message, ...); // arduinoLog: trace
-/* Bigger chunks of debugging information, or frequent messages which can potentially flood the output. */
-void ESP_LOGV(const char* tag, const char *message, ...); // arduinoLog: verbose
-/* Error conditions from which recovery measures have been taken */
-void ESP_LOGW(const char* tag, const char *message, ...); // arduinoLog: warning
-
-#endif // __ESP_LOG_H__
+#endif // __ESP_VS1053_LIBRARY_CONSOLE_LOGGER__

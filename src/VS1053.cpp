@@ -6,7 +6,7 @@
  * version 1.0.1
  *
  * Licensed under GNU GPLv3 <http://gplv3.fsf.org/>
- * Copyright © 2017
+ * Copyright © 2018
  *
  * @authors baldram, edzelf, MagicCube, maniacbug
  *
@@ -31,8 +31,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "VS1053.h"
-
-static const char* TAG = "ESP_VS1053";
 
 VS1053::VS1053(uint8_t _cs_pin, uint8_t _dcs_pin, uint8_t _dreq_pin)
         : cs_pin(_cs_pin), dcs_pin(_dcs_pin), dreq_pin(_dreq_pin) {
@@ -118,7 +116,7 @@ bool VS1053::testComm(const char *header) {
     uint16_t delta = 300; // 3 for fast SPI
 
     if (!digitalRead(dreq_pin)) {
-        ESP_LOGE(TAG, "VS1053 not properly installed!\n");
+        LOG("VS1053 not properly installed!\n");
         // Allow testing without the VS1053 module
         pinMode(dreq_pin, INPUT_PULLUP); // DREQ is now input with pull-up
         return false;                    // Return bad result
@@ -131,8 +129,7 @@ bool VS1053::testComm(const char *header) {
         delta = 3; // Fast SPI, more loops
     }
 
-    std::string headerCr = std::string(header) + "\n";
-    ESP_LOGI(TAG, headerCr.c_str());  // Show a header
+    LOG("%s", header);  // Show a header
 
     for (i = 0; (i < 0xFFFF) && (cnt < 20); i += delta) {
         write_register(SCI_VOL, i);         // Write data to SCI_VOL
@@ -140,7 +137,7 @@ bool VS1053::testComm(const char *header) {
         r2 = read_register(SCI_VOL);        // Read back a second time
         if (r1 != r2 || i != r1 || i != r2) // Check for 2 equal reads
         {
-            ESP_LOGE(TAG, "VS1053 error retry SB:%04X R1:%04X R2:%04X\n", i, r1, r2);
+            LOG("VS1053 error retry SB:%04X R1:%04X R2:%04X\n", i, r1, r2);
             cnt++;
             delay(10);
         }
@@ -149,46 +146,44 @@ bool VS1053::testComm(const char *header) {
     return (cnt == 0); // Return the result
 }
 
-bool VS1053::begin() {
-    bool result = false;
+void VS1053::begin() {
     pinMode(dreq_pin, INPUT); // DREQ is an input
     pinMode(cs_pin, OUTPUT);  // The SCI and SDI signals
     pinMode(dcs_pin, OUTPUT);
     digitalWrite(dcs_pin, HIGH); // Start HIGH for SCI en SDI
     digitalWrite(cs_pin, HIGH);
     delay(100);
-    ESP_LOGI(TAG, "Reset VS1053...\n");
+    LOG("\n");
+    LOG("Reset VS1053...\n");
     digitalWrite(dcs_pin, LOW); // Low & Low will bring reset pin low
     digitalWrite(cs_pin, LOW);
     delay(500);
-    ESP_LOGI(TAG, "End reset VS1053...\n");
+    LOG("End reset VS1053...\n");
     digitalWrite(dcs_pin, HIGH); // Back to normal again
     digitalWrite(cs_pin, HIGH);
     delay(500);
     // Init SPI in slow mode ( 0.2 MHz )
     VS1053_SPI = SPISettings(200000, MSBFIRST, SPI_MODE0);
-    // printDetails ( "Right after reset/startup" ) ;
+    // printDetails("Right after reset/startup");
     delay(20);
-    // printDetails ( "20 msec after reset" ) ;
-    result = testComm("Slow SPI,Testing VS1053 read/write registers...");
-
-    //softReset();
-
-    // Switch on the analog parts
-    write_register(SCI_AUDATA, 44101); // 44.1kHz stereo
-    // The next clocksetting allows SPI clocking at 5 MHz, 4 MHz is safe then.
-    write_register(SCI_CLOCKF, 6 << 12); // Normal clock settings multiplyer 3.0 = 12.2 MHz
-    // SPI Clock to 4 MHz. Now you can set high speed SPI clock.
-    VS1053_SPI = SPISettings(4000000, MSBFIRST, SPI_MODE0);
-    write_register(SCI_MODE, _BV(SM_SDINEW) | _BV(SM_LINE1));
-    result = testComm("Fast SPI, Testing VS1053 read/write registers again...");
-    delay(10);
-    await_data_request();
-    endFillByte = wram_read(0x1E06) & 0xFF;
-    ESP_LOGI(TAG, "endFillByte is %X\n", endFillByte);
-    // printDetails ( "After last clocksetting" ) ;
-    delay(100);
-    return result;
+    // printDetails("20 msec after reset");
+    if (testComm("Slow SPI,Testing VS1053 read/write registers...")) {
+        //softReset();
+        // Switch on the analog parts
+        write_register(SCI_AUDATA, 44101); // 44.1kHz stereo
+        // The next clocksetting allows SPI clocking at 5 MHz, 4 MHz is safe then.
+        write_register(SCI_CLOCKF, 6 << 12); // Normal clock settings multiplyer 3.0 = 12.2 MHz
+        // SPI Clock to 4 MHz. Now you can set high speed SPI clock.
+        VS1053_SPI = SPISettings(4000000, MSBFIRST, SPI_MODE0);
+        write_register(SCI_MODE, _BV(SM_SDINEW) | _BV(SM_LINE1));
+        testComm("Fast SPI, Testing VS1053 read/write registers again...");
+        delay(10);
+        await_data_request();
+        endFillByte = wram_read(0x1E06) & 0xFF;
+        LOG("endFillByte is %X\n", endFillByte);
+        //printDetails("After last clocksetting") ;
+        delay(100);
+    }
 }
 
 void VS1053::setVolume(uint8_t vol) {
@@ -239,7 +234,7 @@ void VS1053::stopSong() {
         modereg = read_register(SCI_MODE); // Read status
         if ((modereg & _BV(SM_CANCEL)) == 0) {
             sdi_send_fillers(2052);
-            ESP_LOGI(TAG, "Song stopped correctly after %d msec\n", i * 10);
+            LOG("Song stopped correctly after %d msec\n", i * 10);
             return;
         }
         delay(10);
@@ -257,17 +252,15 @@ void VS1053::printDetails(const char *header) {
     uint16_t regbuf[16];
     uint8_t i;
 
-    std::string headerCr = std::string(header) + "\n";
-    ESP_LOGI(TAG, headerCr.c_str());
-
-    ESP_LOGI(TAG, "REG   Contents\n");
-    ESP_LOGI(TAG, "---   -----\n");
+    LOG("%s", header);
+    LOG("REG   Contents\n");
+    LOG("---   -----\n");
     for (i = 0; i <= SCI_num_registers; i++) {
         regbuf[i] = read_register(i);
     }
     for (i = 0; i <= SCI_num_registers; i++) {
         delay(5);
-        ESP_LOGI(TAG, "%3X - %5X\n", i, regbuf[i]);
+        LOG("%3X - %5X\n", i, regbuf[i]);
     }
 }
 

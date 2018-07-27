@@ -66,13 +66,13 @@ You can modify the board, but there is a more elegant way without soldering. For
 
 The library uses ESP Arduino framework built in logger (Arduino core for [ESP32](https://github.com/espressif/arduino-esp32/issues/893#issuecomment-348069135) and [ESP8266](https://github.com/esp8266/Arduino/blob/master/doc/Troubleshooting/debugging.rst#debug-level)).<br /> 
 
-To see debug messages please add build flag to your `platformio.ini` as below (depending on platform):
+To see debug messages please add build flags to your `platformio.ini` as below (depending on platform):
 
-- For ESP8266:
+- for ESP8266:
 
 `build_flags = -D DEBUG_ESP_PORT=Serial`
 
-- For ESP32:
+- for ESP32:
 
 `build_flags = -DCORE_DEBUG_LEVEL=ARDUHAL_LOG_LEVEL_DEBUG`
 

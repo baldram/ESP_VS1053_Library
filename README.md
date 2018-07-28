@@ -83,6 +83,26 @@ void setup() {
     Serial.begin(115200);
 }
 ```
+Now if something is wrong, you'll see the output like below (from ESP32):
+
+```
+[I][main.cpp:117] setup(): Hello # VS1053!
+[D][VS1053.cpp:156] begin(): 
+[D][VS1053.cpp:157] begin(): Reset VS1053...
+[D][VS1053.cpp:161] begin(): End reset VS1053...
+[D][VS1053.cpp:119] testComm(): VS1053 not properly installed!
+```
+In successful case it would start with something like this:
+
+```
+[I][main.cpp:117] setup(): Hello # VS1053!
+[D][VS1053.cpp:156] begin(): 
+[D][VS1053.cpp:157] begin(): Reset VS1053...
+[D][VS1053.cpp:161] begin(): End reset VS1053...
+[D][VS1053.cpp:132] testComm(): Slow SPI,Testing VS1053 read/write registers...
+[D][VS1053.cpp:132] testComm(): Fast SPI, Testing VS1053 read/write registers again...
+[D][VS1053.cpp:183] begin(): endFillByte is 0
+```
 
 ## Example wiring
 

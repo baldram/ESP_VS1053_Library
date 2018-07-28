@@ -167,7 +167,7 @@ void VS1053::begin() {
     // printDetails("Right after reset/startup");
     delay(20);
     // printDetails("20 msec after reset");
-    if (testComm("Slow SPI,Testing VS1053 read/write registers...")) {
+    if (testComm("Slow SPI,Testing VS1053 read/write registers...\n")) {
         //softReset();
         // Switch on the analog parts
         write_register(SCI_AUDATA, 44101); // 44.1kHz stereo
@@ -176,7 +176,7 @@ void VS1053::begin() {
         // SPI Clock to 4 MHz. Now you can set high speed SPI clock.
         VS1053_SPI = SPISettings(4000000, MSBFIRST, SPI_MODE0);
         write_register(SCI_MODE, _BV(SM_SDINEW) | _BV(SM_LINE1));
-        testComm("Fast SPI, Testing VS1053 read/write registers again...");
+        testComm("Fast SPI, Testing VS1053 read/write registers again...\n");
         delay(10);
         await_data_request();
         endFillByte = wram_read(0x1E06) & 0xFF;

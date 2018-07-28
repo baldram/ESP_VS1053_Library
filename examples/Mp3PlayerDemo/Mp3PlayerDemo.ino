@@ -3,11 +3,7 @@
   https://github.com/baldram/ESP_VS1053_Library
   If you like this project, please add a star.
 
-  For debugging it uses third-party library ArduinoLog.
-  No need to add a depenency in lib_deps explicitly, since
-  it is used internally by ESP_VS1053_Library.
-
-  Copyright (C) 2017 Marcin Szalomski (github.com/baldram)
+  Copyright (C) 2018 Marcin Szalomski (github.com/baldram)
   Licensed under GNU GPL v3
 
   The circuit (example wiring for ESP8266 based board like eg. LoLin NodeMCU V3):
@@ -44,11 +40,8 @@
 // This ESP_VS1053_Library
 #include <VS1053.h>
 
-// ArduinoLog.h is PlatformIO library id=1532 for logging
-#include <ArduinoLog.h>
-
 // Please find helloMp3.h file here:
-//   github.com/baldram/ESP_VS1053_Library/blob/master/examples/SimpleMp3Player/helloMp3.h
+//   github.com/baldram/ESP_VS1053_Library/blob/master/examples/Mp3PlayerDemo/helloMp3.h
 #include "helloMp3.h"
 
 // Wiring of VS1053 board (SPI connected in a standard way)
@@ -61,24 +54,21 @@
 VS1053 player(VS1053_CS, VS1053_DCS, VS1053_DREQ);
 
 void setup () {
+    Serial.begin(115200);
+  
     // initialize SPI
     SPI.begin();
 
-    // open serial monitor for debugging
-    Serial.begin(9600);
-    while(!Serial && !Serial.available()){}
-    Log.begin(LOG_LEVEL_VERBOSE, &Serial);
-
+    Serial.println("Hello VS1053!\n");
     // initialize a player
-    Log.notice("Hello VS1053!\n");
     player.begin();
     player.switchToMp3Mode(); // optional, some boards require this
     player.setVolume(VOLUME);
 }
 
 void loop() {
-    Log.notice("Playing sound... ");
-
+    Serial.println("Playing sound... ");
+  
     // play mp3 flow each 3s
     player.playChunk(helloMp3, sizeof(helloMp3));
     delay(3000);

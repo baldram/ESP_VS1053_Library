@@ -54,9 +54,12 @@
 VS1053 player(VS1053_CS, VS1053_DCS, VS1053_DREQ);
 
 void setup () {
+    Serial.begin(115200);
+  
     // initialize SPI
     SPI.begin();
 
+    Serial.println("Hello VS1053!\n");
     // initialize a player
     player.begin();
     player.switchToMp3Mode(); // optional, some boards require this
@@ -64,6 +67,8 @@ void setup () {
 }
 
 void loop() {
+    Serial.println("Playing sound... ");
+  
     // play mp3 flow each 3s
     player.playChunk(helloMp3, sizeof(helloMp3));
     delay(3000);

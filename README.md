@@ -76,7 +76,7 @@ To see debug messages please add build flags to your `platformio.ini` as below (
 
 `build_flags = -DCORE_DEBUG_LEVEL=ARDUHAL_LOG_LEVEL_DEBUG`
 
-The Serial Interface need to be initialized in the `setup()`.
+The Serial Interface needs to be initialized in the `setup()`.
 
 ```
 void setup() {

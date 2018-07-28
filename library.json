@@ -17,13 +17,6 @@
   },
   "frameworks": "arduino",
   "platforms": ["espressif32", "espressif8266"],
-  "dependencies": [
-    {
-      "name": "ArduinoLog",
-      "frameworks": "arduino",
-      "platforms": "espressif8266"
-    }
-  ],
   "examples": [
     "[Ee]xamples/*.cpp",
     "[Ee]xamples/*.ino",

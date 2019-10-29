@@ -6,22 +6,22 @@
   
   Wiring:
   --------------------------------
-  | VS1053  | ESP8266 |  Other   |
+  | VS1053  | ESP8266 |  ESP32   |
   --------------------------------
-  |   SCK   |   D5    |    -     |
-  |   MISO  |   D6    |    -     |
-  |   MOSI  |   D7    |    -     |
-  |   XRST  |    -    |    -     |
-  |   CS    |   D1    |    -     |
-  |   DCS   |   D0    |    -     |
-  |   DREQ  |   D3    |    -     |
-  |   5V    |    -    |   VCC    |
-  |   GND   |    -    |   GND    |
+  |   SCK   |   D5    |   IO18   |
+  |   MISO  |   D6    |   IO19   |
+  |   MOSI  |   D7    |   IO23   |
+  |   XRST  |   RST   |   EN     |
+  |   CS    |   D1    |   IO5    |
+  |   DCS   |   D0    |   IO16   |
+  |   DREQ  |   D3    |   IO4    |
+  |   5V    |   5V    |   5V     |
+  |   GND   |   GND   |   GND    |
   --------------------------------
 
   Dependencies:
   -VS1053 library by baldram (https://github.com/baldram/ESP_VS1053_Library)
-  -ESP8266Wifi
+  -ESP8266Wifi/WiFi
 
   To run this example define the platformio.ini as below.
 
@@ -29,8 +29,15 @@
   platform = espressif8266
   board = nodemcuv2
   framework = arduino
-  build_flags = -D PIO_FRAMEWORK_ARDUINO_LWIP2_HIGHER_BANDWIDTH
+  build_flags = -D PIO_FRAMEWORK_ARDUINO_LWIP2_HIGHER_BANDWIDTH -D $PIOENV
+  lib_deps =
+    ESP_VS1053_Library
 
+  [env:esp32dev]
+  platform = espressif32
+  board = esp32dev
+  framework = arduino
+  build_flags = -D PIO_FRAMEWORK_ARDUINO_LWIP2_HIGHER_BANDWIDTH -D $PIOENV
   lib_deps =
     ESP_VS1053_Library
 
@@ -47,11 +54,21 @@
 */
 
 #include <VS1053.h>
+#if defined(nodemcuv2)
 #include <ESP8266WiFi.h>
 
 #define VS1053_CS     D1
 #define VS1053_DCS    D0
 #define VS1053_DREQ   D3
+#endif
+
+#if defined(esp32dev)
+#include <WiFi.h>
+
+#define VS1053_CS     5
+#define VS1053_DCS    16
+#define VS1053_DREQ   4
+#endif
 
 // Default volume
 #define VOLUME  80

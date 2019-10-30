@@ -55,7 +55,6 @@
 #include <VS1053.h>
 #ifdef ARDUINO_ARCH_ESP8266
 #include <ESP8266WiFi.h>
-
 #define VS1053_CS     D1
 #define VS1053_DCS    D0
 #define VS1053_DREQ   D3
@@ -63,7 +62,6 @@
 
 #ifdef ARDUINO_ARCH_ESP32
 #include <WiFi.h>
-
 #define VS1053_CS     5
 #define VS1053_DCS    16
 #define VS1053_DREQ   4
@@ -76,7 +74,7 @@ VS1053 player(VS1053_CS, VS1053_DCS, VS1053_DREQ);
 WiFiClient client;
 
 // WiFi settings example, substitute your own
-char* ssid = "TP-Link";
+const char* ssid = "TP-Link";
 const char* password = "xxxxxxxx";
      
 //  http://comet.shoutca.st:8563/1

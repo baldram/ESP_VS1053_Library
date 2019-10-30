@@ -31,7 +31,6 @@
   platform = espressif8266
   board = nodemcuv2
   framework = arduino
-  build_flags = -D $PIOENV
   lib_deps =
     ESP_VS1053_Library
 
@@ -39,7 +38,6 @@
   platform = espressif32
   board = esp32dev
   framework = arduino
-  build_flags = -D $PIOENV
   lib_deps =
     ESP_VS1053_Library
 
@@ -54,13 +52,14 @@
 #include "SampleMp3.h"
 
 // Wiring of VS1053 board (SPI connected in a standard way)
+#ifdef ARDUINO_ARCH_ESP8266
 #if defined(nodemcuv2)
 #define VS1053_CS     D1
 #define VS1053_DCS    D0
 #define VS1053_DREQ   D3
 #endif
 
-#if defined(esp32dev)
+#ifdef ARDUINO_ARCH_ESP32
 #define VS1053_CS     5
 #define VS1053_DCS    16
 #define VS1053_DREQ   4

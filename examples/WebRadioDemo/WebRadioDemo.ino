@@ -29,7 +29,7 @@
   platform = espressif8266
   board = nodemcuv2
   framework = arduino
-  build_flags = -D PIO_FRAMEWORK_ARDUINO_LWIP2_HIGHER_BANDWIDTH -D $PIOENV
+  build_flags = -D PIO_FRAMEWORK_ARDUINO_LWIP2_HIGHER_BANDWIDTH
   lib_deps =
     ESP_VS1053_Library
 
@@ -37,7 +37,6 @@
   platform = espressif32
   board = esp32dev
   framework = arduino
-  build_flags = -D PIO_FRAMEWORK_ARDUINO_LWIP2_HIGHER_BANDWIDTH -D $PIOENV
   lib_deps =
     ESP_VS1053_Library
 
@@ -54,7 +53,7 @@
 */
 
 #include <VS1053.h>
-#if defined(nodemcuv2)
+#ifdef ARDUINO_ARCH_ESP8266
 #include <ESP8266WiFi.h>
 
 #define VS1053_CS     D1
@@ -62,7 +61,7 @@
 #define VS1053_DREQ   D3
 #endif
 
-#if defined(esp32dev)
+#ifdef ARDUINO_ARCH_ESP32
 #include <WiFi.h>
 
 #define VS1053_CS     5

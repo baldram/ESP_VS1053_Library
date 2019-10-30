@@ -53,7 +53,6 @@
 
 // Wiring of VS1053 board (SPI connected in a standard way)
 #ifdef ARDUINO_ARCH_ESP8266
-#if defined(nodemcuv2)
 #define VS1053_CS     D1
 #define VS1053_DCS    D0
 #define VS1053_DREQ   D3

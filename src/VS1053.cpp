@@ -289,3 +289,38 @@ bool VS1053::isChipConnected() {
 
     return !(status == 0 || status == 0xFFFF);
 }
+
+/**
+ * Provides SCI_DECODE_TIME register value
+ *
+ * When decoding correct data, current decoded time is shown in this register in full seconds.
+ * The user may change the value of this register. In that case the new value should be written
+ * twice to make absolutely certain that the change is not overwritten by the firmware. A write to
+ * SCI_DECODE_TIME also resets the byteRate calculation.
+ *
+ * SCI_DECODE_TIME is reset at every hardware and software reset. It is no longer cleared
+ * when decoding of a file ends to allow the decode time to proceed automatically with looped
+ * files and with seamless playback of multiple files.
+ * With fast playback (see the playSpeed extra parameter) the decode time also counts faster.
+ * Some codecs (WMA and Ogg Vorbis) can also indicate the absolute play position, see the
+ * positionMsec extra parameter in section 10.11.
+ *
+ * @see VS1053b Datasheet / FUNCTIONAL DESCRIPTION (v1.20, 2012-12-03) / 9.6.5 SCI_DECODE_TIME (RW)
+ *
+ * @return current decoded time in full seconds
+ */
+uint16_t VS1053::getDecodedTime() {
+    read_register(SPI_DECODE_TIME);
+}
+
+/**
+ * Clears SCI_DECODE_TIME register (sets 0x00)
+ *
+ * The user may change the value of this register. In that case the new value should be written
+ * twice to make absolutely certain that the change is not overwritten by the firmware. A write to
+ * SCI_DECODE_TIME also resets the byteRate calculation.
+ */
+void VS1053::clearDecodedTime() {
+    write_register(SPI_DECODE_TIME, 0x00);
+    write_register(SPI_DECODE_TIME, 0x00);
+}

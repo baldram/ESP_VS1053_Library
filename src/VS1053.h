@@ -50,7 +50,7 @@ private:
     const uint8_t SCI_STATUS = 0x1;
     const uint8_t SCI_BASS = 0x2;
     const uint8_t SCI_CLOCKF = 0x3;
-    const uint8_t SPI_DECODE_TIME = 0x4;        // current decoded time in full seconds
+    const uint8_t SCI_DECODE_TIME = 0x4;        // current decoded time in full seconds
     const uint8_t SCI_AUDATA = 0x5;
     const uint8_t SCI_WRAM = 0x6;
     const uint8_t SCI_WRAMADDR = 0x7;

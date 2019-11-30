@@ -311,7 +311,7 @@ bool VS1053::isChipConnected() {
  * @return current decoded time in full seconds
  */
 uint16_t VS1053::getDecodedTime() {
-    read_register(SPI_DECODE_TIME);
+    read_register(SCI_DECODE_TIME);
 }
 
 /**
@@ -323,6 +323,6 @@ uint16_t VS1053::getDecodedTime() {
  * byteRate calculation.
  */
 void VS1053::clearDecodedTime() {
-    write_register(SPI_DECODE_TIME, 0x00);
-    write_register(SPI_DECODE_TIME, 0x00);
+    write_register(SCI_DECODE_TIME, 0x00);
+    write_register(SCI_DECODE_TIME, 0x00);
 }

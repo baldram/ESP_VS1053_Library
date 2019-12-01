@@ -306,7 +306,7 @@ bool VS1053::isChipConnected() {
  * counts faster. Some codecs (WMA and Ogg Vorbis) can also indicate the absolute
  * play position, see the positionMsec extra parameter in section 10.11.
  *
- * @see VS1053b Datasheet / Functional Description (v1.20) / 9.6.5 SCI_DECODE_TIME (RW)
+ * @see VS1053b Datasheet (1.31) / 9.6.5 SCI_DECODE_TIME (RW)
  *
  * @return current decoded time in full seconds
  */

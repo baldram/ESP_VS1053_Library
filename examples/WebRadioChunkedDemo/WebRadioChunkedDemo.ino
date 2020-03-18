@@ -18,6 +18,7 @@ WiFiClient client;
 const char *ssid = "TP-Link";
 const char *password = "xxxxxxxx";
 
+// this is the audio stream which uses chunked transfer
 const char *host = "icecast.radiofrance.fr";
 const char *path = "/franceculture-lofi.mp3";
 int httpPort = 80;
@@ -56,9 +57,14 @@ void playRing(uint8_t b) {
 	}
 }
 
+// FIX CHUNKED GLITCHES BEGIN
+// introduce here a new byte buffer in the middle with size of 8 bytes
 uint8_t middleBuffer[8];
 uint8_t middleBufferCount = 0;
 
+/***
+ * Searches the middle buffer for extra chunked control bytes and removes them if needed.
+ */
 void fix_middle_ring() {
 	if (middleBuffer[0] != '\r') {
 		return;
@@ -68,6 +74,7 @@ void fix_middle_ring() {
 	}
 
 	if (middleBuffer[4] == '\r' && middleBuffer[5] == '\n') {
+		// we discover here control section which is 6 bytes length
 		// \r\n<byte><byte>\r\n
 		middleBufferCount = 2;
 		Serial.println("Flush middle ring");
@@ -76,6 +83,7 @@ void fix_middle_ring() {
 	}
 
 	if (middleBuffer[5] == '\r' && middleBuffer[6] == '\n') {
+		// we discover here control section which is 7 bytes length
 		// \r\n<byte><byte><byte>\r\n
 		middleBufferCount = 1;
 		Serial.println("Flush middle ring");
@@ -84,6 +92,7 @@ void fix_middle_ring() {
 	}
 
 	if (middleBuffer[6] == '\r' && middleBuffer[7] == '\n') {
+		// we discover here control section which is 8 bytes length
 		// \r\n<byte><byte><byte><byte>\r\n
 		middleBufferCount = 0;
 		Serial.println("Flush middle ring");
@@ -112,6 +121,7 @@ void put_middle_ring(uint8_t newValue) {
 
 	fix_middle_ring();
 }
+// FIX CHUNKED GLITCHES END
 
 void setup() {
 	Serial.begin(115200);
@@ -157,7 +167,10 @@ void loop() {
 			maxfilechunk = CLIENT_BUFF;
 		}
 		while (ringspace() && maxfilechunk--) {
+			// FIX CHUNKED GLITCHES BEGIN
+			// use the buffer in the middle to detect extra chunked control bytes
 			put_middle_ring(client.read());
+			// FIX CHUNKED GLITCHES END
 		}
 		yield();
 		while (rcount && (player.data_request())) {

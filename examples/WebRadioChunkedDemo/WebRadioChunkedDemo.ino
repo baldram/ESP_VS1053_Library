@@ -1,10 +1,10 @@
 #include <Arduino.h>
 #include <VS1053.h>
-#include <WiFi.h>
+#include <ESP8266WiFi.h>
 
-#define VS1053_CS     5
-#define VS1053_DCS    16
-#define VS1053_DREQ   4
+#define VS1053_CS     D1
+#define VS1053_DCS    D0
+#define VS1053_DREQ   D3
 
 #define VOLUME  80
 
@@ -19,7 +19,7 @@ const char *ssid = "TP-Link";
 const char *password = "xxxxxxxx";
 
 const char *host = "icecast.radiofrance.fr";
-const char *path = "/franceculture-midfi.mp3";
+const char *path = "/franceculture-lofi.mp3";
 int httpPort = 80;
 
 uint16_t rcount = 0;
@@ -65,6 +65,9 @@ void setup() {
 	player.switchToMp3Mode();
 	player.setVolume(VOLUME);
 	WiFi.begin(ssid, password);
+	WiFi.setAutoConnect(true);
+    WiFi.setAutoReconnect(true);
+	WiFi.reconnect();
 	while (WiFi.status() != WL_CONNECTED) {
 		delay(500);
 		Serial.print(".");
@@ -75,7 +78,7 @@ void setup() {
 	}
 	client.print(
 			String("GET ") + path + " HTTP/1.1\r\n" + "Host: " + host + "\r\n"
-					+ "Icy-MetaData: 1" + "\r\n" + "Connection: close\r\n\r\n");
+					+ "Icy-MetaData: 0" + "\r\n" + "Connection: close\r\n\r\n");
 }
 
 void loop() {
@@ -86,7 +89,7 @@ void loop() {
 		if (client.connect(host, httpPort)) {
 			client.print(
 					String("GET ") + path + " HTTP/1.1\r\n" + "Host: " + host
-							+ "\r\n" + "Icy-MetaData: 1" + "\r\n"
+							+ "\r\n" + "Icy-MetaData: 0" + "\r\n"
 							+ "Connection: close\r\n\r\n");
 		}
 	}

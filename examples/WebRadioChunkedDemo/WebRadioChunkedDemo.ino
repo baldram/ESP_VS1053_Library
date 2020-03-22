@@ -55,7 +55,7 @@ void setup() {
   // This can be set in the IDE no need for ext library
   // system_update_cpu_freq(160);
 
-  Serial.println("\n\Chunked Transfer Radio Node WiFi Radio");
+  Serial.println("\n\nChunked Transfer Radio Node WiFi Radio");
 
   SPI.begin();
 
@@ -212,7 +212,7 @@ uint8_t remove_chunk_control_data(uint8_t *data, size_t length) {
 
   uint8_t writeindex = 0;
   uint8_t index = 0;
-  for (index = 0; index < lengt; index++) {
+  for (index = 0; index < length; index++) {
     uint8_t input = data[index];
     int16_t output = put_through_helper_buffer(input);
     if (output >= 0) {

@@ -119,6 +119,7 @@ uint8_t __attribute__((aligned(4))) helperBufferCount = 0;
  * Removes the chunk control data from the helper buffer.
  *
  * Only the following chunk control bytes are removed:
+ * \r\n<byte>\r\n
  * \r\n<byte><byte>\r\n
  * \r\n<byte><byte><byte>\r\n
  * \r\n<byte><byte><byte><byte>\r\n
@@ -131,6 +132,15 @@ void remove_chunk_control_data_from_helper_buffer() {
   }
   if (helperBuffer[1] != '\n') {
     // die fast
+    return;
+  }
+
+  if (helperBuffer[3] == '\r' && helperBuffer[4] == '\n') {
+    // 5 bytes length chunk control section discovered
+    // \r\n<byte>\r\n
+    helperBufferCount = 3;
+    Serial.println("Removed control data: 5 bytes");
+
     return;
   }
 

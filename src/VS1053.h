@@ -164,6 +164,7 @@ public:
     // Clears SCI_DECODE_TIME register (sets 0x00)
     void clearDecodedTime();
 
+    // Made public to enable loading firmware patches in user code
     void write_register(uint8_t _reg, uint16_t _value) const;    
 };
 

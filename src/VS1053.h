@@ -152,6 +152,9 @@ public:
         return (digitalRead(dreq_pin) == HIGH);
     }
 
+    // Fine tune the data rate
+    void adjustRate(long ppm2);
+
     // An optional switch preventing the module starting up in MIDI mode
     void switchToMp3Mode();
 

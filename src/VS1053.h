@@ -115,7 +115,7 @@ public:
     VS1053(uint8_t _cs_pin, uint8_t _dcs_pin, uint8_t _dreq_pin);
 
     // Begin operation.  Sets pins correctly, and prepares SPI bus.
-    // The patch parameter can be used to not load the latest firmware patch
+    // The patch parameter can be used to prevent the latest firmware patch from loading.
     void begin(const bool autopatch = true);
 
     // Prepare to start playing. Call this each time a new song starts
@@ -171,10 +171,11 @@ public:
     void clearDecodedTime();
 
     // Writes to VS10xx's SCI (serial command interface) SPI bus.
-    // A low level method which helps in loading firmware patches in user code.
+    // A low level method which lets users access the internals of the VS1053.
     void write_register(uint8_t _reg, uint16_t _value) const;
 
-    // Load a patch or plugin to enhance functionality
+    // Load a patch or plugin to fix bugs and/or extend functionality.
+    // For more info about patches see http://www.vlsi.fi/en/support/software/vs10xxpatches.html
     void loadUserCode(const unsigned short* plugin);
 };
 

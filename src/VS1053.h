@@ -115,7 +115,7 @@ public:
     VS1053(uint8_t _cs_pin, uint8_t _dcs_pin, uint8_t _dreq_pin);
 
     // Begin operation.  Sets pins correctly, and prepares SPI bus.
-    void begin();
+    void begin(const bool patch = true);
 
     // Prepare to start playing. Call this each time a new song starts
     void startSong();

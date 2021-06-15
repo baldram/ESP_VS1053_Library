@@ -370,23 +370,22 @@ void VS1053::adjustRate(long ppm2) {
  * Load a patch or plugin
  */
 void VS1053::loadUserCode(const unsigned short* plugin) {
-  int i = 0;
-
-  while (i<sizeof(plugin)/sizeof(plugin[0])) {
-    unsigned short addr, n, val;
-    addr = plugin[i++];
-    n = plugin[i++];
-    if (n & 0x8000U) { /* RLE run, replicate n samples */
-      n &= 0x7FFF;
-      val = plugin[i++];
-      while (n--) {
-        write_register(addr, val);
-      }
-    } else {           /* Copy run, copy n samples */
-      while (n--) {
-        val = plugin[i++];
-        write_register(addr, val);
-      }
+    int i = 0;
+    while (i<sizeof(plugin)/sizeof(plugin[0])) {
+        unsigned short addr, n, val;
+        addr = plugin[i++];
+        n = plugin[i++];
+        if (n & 0x8000U) { /* RLE run, replicate n samples */
+            n &= 0x7FFF;
+            val = plugin[i++];
+            while (n--) {
+                write_register(addr, val);
+            }
+        } else {           /* Copy run, copy n samples */
+            while (n--) {
+                val = plugin[i++];
+                write_register(addr, val);
+            }
+        }
     }
-  }
 }

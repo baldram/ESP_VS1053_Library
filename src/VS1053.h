@@ -115,7 +115,8 @@ public:
     VS1053(uint8_t _cs_pin, uint8_t _dcs_pin, uint8_t _dreq_pin);
 
     // Begin operation.  Sets pins correctly, and prepares SPI bus.
-    void begin(const bool patch = true);
+    // The patch parameter can be used to not load the latest firmware patch
+    void begin(const bool autopatch = true);
 
     // Prepare to start playing. Call this each time a new song starts
     void startSong();
@@ -173,6 +174,7 @@ public:
     // A low level method which helps in loading firmware patches in user code.
     void write_register(uint8_t _reg, uint16_t _value) const;
 
+    // Load a patch or plugin to enhance functionality
     void loadUserCode(const unsigned short* plugin);
 };
 

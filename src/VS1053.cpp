@@ -146,7 +146,7 @@ bool VS1053::testComm(const char *header) {
     return (cnt == 0); // Return the result
 }
 
-void VS1053::begin(const bool patch) {
+void VS1053::begin(const bool autopatch) {
     pinMode(dreq_pin, INPUT); // DREQ is an input
     pinMode(cs_pin, OUTPUT);  // The SCI and SDI signals
     pinMode(dcs_pin, OUTPUT);
@@ -184,7 +184,7 @@ void VS1053::begin(const bool patch) {
         //printDetails("After last clocksetting") ;
         delay(100);
     }
-    if (patch) loadUserCode(patches);
+    if (autopatch) loadUserCode(patches);
 }
 
 void VS1053::setVolume(uint8_t vol) {

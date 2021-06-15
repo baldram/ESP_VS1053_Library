@@ -184,7 +184,7 @@ void VS1053::begin() {
         //printDetails("After last clocksetting") ;
         delay(100);
     }
-    loadUserCode(vs1053b2_9);
+    loadUserCode(patches);
 }
 
 void VS1053::setVolume(uint8_t vol) {

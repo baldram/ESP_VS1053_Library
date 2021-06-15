@@ -38,7 +38,7 @@
 #include <SPI.h>
 #include "ConsoleLogger.h"
 
-#include "patches/vs1053b-patches.plg.h"
+#include "patches/vs1053b-patches.plg"
 
 class VS1053 {
 private:

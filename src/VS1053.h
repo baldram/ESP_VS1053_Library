@@ -38,6 +38,8 @@
 #include <SPI.h>
 #include "ConsoleLogger.h"
 
+#include "patches/vs1053b-patches.plg.h"
+
 class VS1053 {
 private:
     uint8_t cs_pin;                         // Pin where CS line is connected
@@ -170,6 +172,8 @@ public:
     // Writes to VS10xx's SCI (serial command interface) SPI bus.
     // A low level method which helps in loading firmware patches in user code.
     void write_register(uint8_t _reg, uint16_t _value) const;
+
+    void loadUserCode(const unsigned short* plugin);
 };
 
 #endif

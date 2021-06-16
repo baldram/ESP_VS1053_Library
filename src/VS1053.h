@@ -115,8 +115,7 @@ public:
     VS1053(uint8_t _cs_pin, uint8_t _dcs_pin, uint8_t _dreq_pin);
 
     // Begin operation.  Sets pins correctly, and prepares SPI bus.
-    // The patch parameter can be used to prevent the latest firmware patch from loading.
-    void begin(const bool autopatch = true);
+    void begin();
 
     // Prepare to start playing. Call this each time a new song starts
     void startSong();
@@ -177,6 +176,9 @@ public:
     // Load a patch or plugin to fix bugs and/or extend functionality.
     // For more info about patches see http://www.vlsi.fi/en/support/software/vs10xxpatches.html
     void loadUserCode(const unsigned short* plugin);
+
+    // Loads the latest generic firmware patch.
+    void loadDefaultVs1053Patches();
 };
 
 #endif

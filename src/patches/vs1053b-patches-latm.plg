@@ -1,5 +1,5 @@
 #ifndef SKIP_PLUGIN_VARNAME
-const unsigned short patches_latm[] = { /* Compressed plugin */
+const unsigned short PATCHES_LATM[] = { /* Compressed plugin */
 #endif
 	0x0007,0x0001, /*copy 1*/
 	0x8050,

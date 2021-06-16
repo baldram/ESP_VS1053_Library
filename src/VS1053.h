@@ -171,7 +171,7 @@ public:
 
     // Writes to VS10xx's SCI (serial command interface) SPI bus.
     // A low level method which lets users access the internals of the VS1053.
-    void write_register(uint8_t _reg, uint16_t _value) const;
+    void writeRegister(uint8_t _reg, uint16_t _value) const;
 
     // Load a patch or plugin to fix bugs and/or extend functionality.
     // For more info about patches see http://www.vlsi.fi/en/support/software/vs10xxpatches.html

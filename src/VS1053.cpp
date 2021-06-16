@@ -50,7 +50,7 @@ uint16_t VS1053::read_register(uint8_t _reg) const {
     return result;
 }
 
-void VS1053::write_register(uint8_t _reg, uint16_t _value) const {
+void VS1053::writeRegister(uint8_t _reg, uint16_t _value) const {
     control_mode_on();
     SPI.write(2);        // Write operation
     SPI.write(_reg);     // Register to write (0..0xF)

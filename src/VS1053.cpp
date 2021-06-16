@@ -393,5 +393,5 @@ void VS1053::loadUserCode(const unsigned short* plugin) {
  * Load the latest generic firmware patch
  */
 void VS1053::loadDefaultVs1053Patches() {
-   loadUserCode(patches);
+   loadUserCode(PATCHES);
 };

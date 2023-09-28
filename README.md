@@ -119,6 +119,10 @@ To see debug messages please add build flags to your `platformio.ini` as below (
 
 `build_flags = -DCORE_DEBUG_LEVEL=ARDUHAL_LOG_LEVEL_DEBUG`
 
+- for RP2040 using [arduino-pico core](https://github.com/earlephilhower/arduino-pico)
+
+`build_flags = -DDEBUG_RP2040_PORT=Serial -DDEBUG_VS1053=true`
+
 The Serial Interface needs to be initialized in the `setup()`.
 
 ```c++

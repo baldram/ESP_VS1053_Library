@@ -40,8 +40,8 @@ uint16_t VS1053::read_register(uint8_t _reg) const {
     uint16_t result;
 
     control_mode_on();
-    SPI.write(3);    // Read operation
-    SPI.write(_reg); // Register to read (0..0xF)
+    spi_write(3);    // Read operation
+    spi_write(_reg); // Register to read (0..0xF)
     // Note: transfer16 does not seem to work
     result = (SPI.transfer(0xFF) << 8) | // Read 16 bits data
              (SPI.transfer(0xFF));
@@ -52,9 +52,9 @@ uint16_t VS1053::read_register(uint8_t _reg) const {
 
 void VS1053::writeRegister(uint8_t _reg, uint16_t _value) const {
     control_mode_on();
-    SPI.write(2);        // Write operation
-    SPI.write(_reg);     // Register to write (0..0xF)
-    SPI.write16(_value); // Send 16 bits data
+    spi_write(2);        // Write operation
+    spi_write(_reg);     // Register to write (0..0xF)
+    spi_write16(_value); // Send 16 bits data
     await_data_request();
     control_mode_off();
 }
@@ -71,7 +71,7 @@ void VS1053::sdi_send_buffer(uint8_t *data, size_t len) {
             chunk_length = vs1053_chunk_size;
         }
         len -= chunk_length;
-        SPI.writeBytes(data, chunk_length);
+        spi_write_bytes(data, chunk_length);
         data += chunk_length;
     }
     data_mode_off();
@@ -90,7 +90,7 @@ void VS1053::sdi_send_fillers(size_t len) {
         }
         len -= chunk_length;
         while (chunk_length--) {
-            SPI.write(endFillByte);
+            spi_write(endFillByte);
         }
     }
     data_mode_off();

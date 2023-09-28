@@ -40,6 +40,10 @@
 
 #include "patches/vs1053b-patches.h"
 
+#ifndef _BV
+#define _BV(bit) (1 << (bit))
+#endif
+
 enum VS1053_I2S_RATE {
     VS1053_I2S_RATE_192_KHZ,
     VS1053_I2S_RATE_96_KHZ,
@@ -118,6 +122,32 @@ protected:
     void sdi_send_buffer(uint8_t *data, size_t len);
 
     void sdi_send_fillers(size_t length);
+
+    inline void spi_write(uint8_t data) const {
+#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+        SPI.write(data);
+#else
+        (void)SPI.transfer(data);
+#endif
+    }
+
+    inline void spi_write16(uint16_t data) const {
+#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+        SPI.write16(data);
+#else
+        (void)SPI.transfer16(data);
+#endif
+    }
+
+    inline void spi_write_bytes(const uint8_t * data, uint32_t size) const {
+#if defined(ARDUINO_ARCH_ESP32) || defined(ARDUINO_ARCH_ESP8266)
+        SPI.writeBytes(data, size);
+#else
+        for (int i = 0; i < size; ++i) {
+            SPI.transfer(data[i]);
+        }
+#endif
+    }
 
     void wram_write(uint16_t address, uint16_t data);
 

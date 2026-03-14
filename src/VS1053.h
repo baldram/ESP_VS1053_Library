@@ -64,6 +64,8 @@ private:
     const uint8_t SCI_AUDATA = 0x5;
     const uint8_t SCI_WRAM = 0x6;
     const uint8_t SCI_WRAMADDR = 0x7;
+    const uint8_t SCI_HDAT0 = 0x08;
+    const uint8_t SCI_HDAT1 = 0x09;
     const uint8_t SCI_AIADDR = 0xA;
     const uint8_t SCI_VOL = 0xB;
     const uint8_t SCI_AICTRL0 = 0xC;

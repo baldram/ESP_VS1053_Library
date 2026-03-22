@@ -39,6 +39,10 @@
 #include "ConsoleLogger.h"
 
 #include "patches/vs1053b-patches.h"
+#include "patches/vs1053b-patches-flac.h"
+#include "patches/vs1053b-patches-flac-latm.h"
+#include "patches/vs1053b-patches-latm.h"
+#include "patches/vs1053b-patches-pitch.h"
 
 enum VS1053_I2S_RATE {
     VS1053_I2S_RATE_192_KHZ,

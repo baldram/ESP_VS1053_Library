@@ -731,7 +731,7 @@ const unsigned short PATCHES_LATM[] = { /* Compressed plugin */
 	0x0775,0x077b,
 	0x000a,0x0001, /*copy 1*/
 	0x0050,
-#define PLUGIN_SIZE 5594
+#define LATM_SIZE 5594
 #ifndef SKIP_PLUGIN_VARNAME
 };
 #endif

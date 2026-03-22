@@ -783,7 +783,7 @@ const unsigned short PATCHES_PITCH[] = { /* Compressed plugin */
 	0x0006, 0x8006, 0x0000, /*Rle(6)*/
 	0x000a,0x0001, /*copy 1*/
 	0x0050,
-#define PLUGIN_SIZE 5964
+#define PITCH_SIZE 5964
 #ifndef SKIP_PLUGIN_VARNAME
 };
 #endif

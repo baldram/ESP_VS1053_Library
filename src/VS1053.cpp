@@ -237,7 +237,7 @@ int8_t VS1053::getBalance() { // Get the currenet balance setting.
 }
 
 void VS1053::startSong() {
-    sdi_send_fillers(12288); // FLAC has a 12kB decode buffer
+    sdi_send_fillers(10);
 }
 
 void VS1053::playChunk(uint8_t *data, size_t len) {

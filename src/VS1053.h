@@ -39,6 +39,10 @@
 #include "ConsoleLogger.h"
 
 #include "patches/vs1053b-patches.h"
+#include "patches/vs1053b-patches-flac.h"
+#include "patches/vs1053b-patches-flac-latm.h"
+#include "patches/vs1053b-patches-latm.h"
+#include "patches/vs1053b-patches-pitch.h"
 
 enum VS1053_I2S_RATE {
     VS1053_I2S_RATE_192_KHZ,
@@ -64,6 +68,8 @@ private:
     const uint8_t SCI_AUDATA = 0x5;
     const uint8_t SCI_WRAM = 0x6;
     const uint8_t SCI_WRAMADDR = 0x7;
+    const uint8_t SCI_HDAT0 = 0x08;
+    const uint8_t SCI_HDAT1 = 0x09;
     const uint8_t SCI_AIADDR = 0xA;
     const uint8_t SCI_VOL = 0xB;
     const uint8_t SCI_AICTRL0 = 0xC;
@@ -112,8 +118,6 @@ protected:
         digitalWrite(dcs_pin, HIGH);        // End data mode
         SPI.endTransaction();               // Allow other SPI users
     }
-
-    uint16_t read_register(uint8_t _reg) const;
 
     void sdi_send_buffer(uint8_t *data, size_t len);
 
@@ -200,6 +204,10 @@ public:
     // Writes to VS10xx's SCI (serial command interface) SPI bus.
     // A low level method which lets users access the internals of the VS1053.
     void writeRegister(uint8_t _reg, uint16_t _value) const;
+
+    // Reads from the VS10xx's SCI (serial command interface) SPI bus.
+    // A low level method which lets users access the internals of the VS1053.
+    uint16_t readRegister(uint8_t _reg) const;
 
     // Load a patch or plugin to fix bugs and/or extend functionality.
     // For more info about patches see http://www.vlsi.fi/en/support/software/vs10xxpatches.html

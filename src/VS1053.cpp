@@ -36,7 +36,7 @@ VS1053::VS1053(uint8_t _cs_pin, uint8_t _dcs_pin, uint8_t _dreq_pin)
         : cs_pin(_cs_pin), dcs_pin(_dcs_pin), dreq_pin(_dreq_pin) {
 }
 
-uint16_t VS1053::read_register(uint8_t _reg) const {
+uint16_t VS1053::readRegister(uint8_t _reg) const {
     uint16_t result;
 
     control_mode_on();
@@ -103,7 +103,7 @@ void VS1053::wram_write(uint16_t address, uint16_t data) {
 
 uint16_t VS1053::wram_read(uint16_t address) {
     writeRegister(SCI_WRAMADDR, address); // Start reading from WRAM
-    return read_register(SCI_WRAM);        // Read back result
+    return readRegister(SCI_WRAM);        // Read back result
 }
 
 bool VS1053::testComm(const char *header) {
@@ -133,8 +133,8 @@ bool VS1053::testComm(const char *header) {
 
     for (i = 0; (i < 0xFFFF) && (cnt < 20); i += delta) {
         writeRegister(SCI_VOL, i);         // Write data to SCI_VOL
-        r1 = read_register(SCI_VOL);        // Read back for the first time
-        r2 = read_register(SCI_VOL);        // Read back a second time
+        r1 = readRegister(SCI_VOL);        // Read back for the first time
+        r2 = readRegister(SCI_VOL);        // Read back a second time
         if (r1 != r2 || i != r1 || i != r2) // Check for 2 equal reads
         {
             LOG("VS1053 error retry SB:%04X R1:%04X R2:%04X\n", i, r1, r2);
@@ -253,7 +253,7 @@ void VS1053::stopSong() {
     writeRegister(SCI_MODE, _BV(SM_SDINEW) | _BV(SM_CANCEL));
     for (i = 0; i < 200; i++) {
         sdi_send_fillers(32);
-        modereg = read_register(SCI_MODE); // Read status
+        modereg = readRegister(SCI_MODE); // Read status
         if ((modereg & _BV(SM_CANCEL)) == 0) {
             sdi_send_fillers(2052);
             LOG("Song stopped correctly after %d msec\n", i * 10);
@@ -303,7 +303,7 @@ void VS1053::printDetails(const char *header) {
     LOG("REG   Contents\n");
     LOG("---   -----\n");
     for (i = 0; i <= SCI_num_registers; i++) {
-        regbuf[i] = read_register(i);
+        regbuf[i] = readRegister(i);
     }
     for (i = 0; i <= SCI_num_registers; i++) {
         delay(5);
@@ -365,7 +365,7 @@ void VS1053::enableI2sOut(VS1053_I2S_RATE i2sRate) {
  * @return true if the chip is wired up correctly
  */
 bool VS1053::isChipConnected() {
-    uint16_t status = read_register(SCI_STATUS);
+    uint16_t status = readRegister(SCI_STATUS);
 
     return !(status == 0 || status == 0xFFFF);
 }
@@ -376,7 +376,7 @@ bool VS1053::isChipConnected() {
  * 5 for VS1033, 7 for VS1103, and 6 for VS1063. 
  */
 uint16_t VS1053::getChipVersion() {
-    uint16_t status = read_register(SCI_STATUS);
+    uint16_t status = readRegister(SCI_STATUS);
        
     return ( (status & 0x00F0) >> 4);
 }
@@ -402,7 +402,7 @@ uint16_t VS1053::getChipVersion() {
  * @return current decoded time in full seconds
  */
 uint16_t VS1053::getDecodedTime() {
-    return read_register(SCI_DECODE_TIME);
+    return readRegister(SCI_DECODE_TIME);
 }
 
 /**
@@ -429,7 +429,7 @@ void VS1053::adjustRate(long ppm2) {
     writeRegister(SCI_WRAMADDR, 0x5b1c);
     writeRegister(SCI_WRAM, 0);
     // Write to AUDATA or CLOCKF checks rate and recalculates adjustment.
-    writeRegister(SCI_AUDATA, read_register(SCI_AUDATA));
+    writeRegister(SCI_AUDATA, readRegister(SCI_AUDATA));
 }
 
 /**

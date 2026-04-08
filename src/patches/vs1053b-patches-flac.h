@@ -1093,7 +1093,7 @@ const unsigned short PATCHES_FLAC[] = { /* Compressed plugin */
 	0x0004,0x0000,0xfffa,0xffff,0x0004,0x0000,0xffff,0xffff,
 	0x000a,0x0001, /*copy 1*/
 	0x0050,
-#define PLUGIN_SIZE 8414
+#define PATCHES_FLAC_SIZE 8414
 #ifndef SKIP_PLUGIN_VARNAME
 };
 #endif

@@ -44,6 +44,21 @@
 #include "patches/vs1053b-patches-latm.h"
 #include "patches/vs1053b-patches-pitch.h"
 
+#ifndef VS1053_SCI_CLOCKF
+// set SCI_CLOCKF=0x8800 (SC_MULT=3.5, SC_ADD=1.0) as per datasheet recommendation (section 4.2)
+// increased SC_MULT and resulting CLKI are needed vor VS1053 to handle higher SPI rates: SCK_max = CLKI/7
+#define VS1053_SCI_CLOCKF 0x8800
+#endif
+
+#ifndef VS1053_SLOW_SCK
+#define VS1053_SLOW_SCK 200000
+#endif
+
+#ifndef VS1053_FAST_SCK
+// take care to set VS1053_SCI_CLOCKF accordingly
+#define VS1053_FAST_SCK 4000000
+#endif
+
 enum VS1053_I2S_RATE {
     VS1053_I2S_RATE_192_KHZ,
     VS1053_I2S_RATE_96_KHZ,

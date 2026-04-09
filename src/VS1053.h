@@ -121,6 +121,8 @@ protected:
 
     void sdi_send_buffer(uint8_t *data, size_t len);
 
+    size_t sdi_send_buffer_non_blocking(const uint8_t *data, size_t limit);
+
     void sdi_send_fillers(size_t length);
 
     void wram_write(uint16_t address, uint16_t data);
@@ -139,6 +141,10 @@ public:
 
     // Play a chunk of data.  Copies the data to the chip.  Blocks until complete
     void playChunk(uint8_t *data, size_t len);
+
+    // Writes the up to limit bytes from the given buffer to the VS1053 audio buffer. Tries to write as many bytes
+    // as possible with out blocking. Returns the number of bytes written.
+    size_t playNonBlocking(const uint8_t *data, size_t limit);
 
     // Finish playing a song. Call this after the last playChunk call
     void stopSong();

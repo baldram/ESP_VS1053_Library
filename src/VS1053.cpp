@@ -77,6 +77,30 @@ void VS1053::sdi_send_buffer(uint8_t *data, size_t len) {
     data_mode_off();
 }
 
+size_t VS1053::sdi_send_buffer_non_blocking(const uint8_t *data, size_t limit) {
+    size_t iocount = 0;
+
+    data_mode_on();
+    while (digitalRead(dreq_pin) && limit > 0) // More to do?
+    {
+        size_t chunk_length = limit;
+        if (chunk_length > vs1053_chunk_size) {
+            chunk_length = vs1053_chunk_size;
+        }
+
+        spi_write_bytes(data, chunk_length);
+
+        data += chunk_length;
+        limit -= chunk_length;
+        iocount += chunk_length;
+
+        yield();
+    }
+    data_mode_off();
+
+    return iocount;
+}
+
 void VS1053::sdi_send_fillers(size_t len) {
     size_t chunk_length; // Length of chunk 32 byte or shorter
 
@@ -242,6 +266,10 @@ void VS1053::startSong() {
 
 void VS1053::playChunk(uint8_t *data, size_t len) {
     sdi_send_buffer(data, len);
+}
+
+size_t VS1053::playNonBlocking(const uint8_t *data, size_t limit) {
+    return sdi_send_buffer_non_blocking(data, limit);
 }
 
 void VS1053::stopSong() {

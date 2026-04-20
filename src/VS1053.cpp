@@ -244,6 +244,46 @@ void VS1053::playChunk(uint8_t *data, size_t len) {
     sdi_send_buffer(data, len);
 }
 
+
+/**
+ * send a MIDI message
+ *
+ * a MIDI message ranges from 1 byte to three bytes
+ * the first byte consists of 4 command bits and 4 channel bits
+ * 
+ * based on talkMIDI function in MP3_Shield_RealtimeMIDI demo by Matthias Neeracher,
+ * which is based on Nathan Seidle's Sparkfun Electronics example
+ */
+ 
+void VS1053::sendMidiMessage(uint8_t cmd, uint8_t data1, uint8_t data2) {
+      
+    digitalWrite(dcs_pin, LOW); //data_mode_on() does not seem to work here
+
+    // await_data_request() works for VS1053 and provides from overrunning the input buffer,
+    // which is unlikely to happen in RTMidi
+    // for VS1003 for some reason sometimes DREQ is ALWAYS down
+    // Hence, in case of running to an infinite loop, commenting await_data_request() is the solution    
+    await_data_request(); 
+	
+    SPI.write(0x00);
+    SPI.write(cmd);    
+
+    // Some commands only have one data byte. All cmds less than 0xBn have 2 data bytes 
+    // (sort of: http://253.ccarh.org/handout/midiprotocol/)
+    if( (cmd & 0xF0) <= 0xB0 || (cmd & 0xF0) >= 0xE0) {
+      SPI.write(0x00);  
+      SPI.write(data1);      
+      SPI.write(0x00);  
+      SPI.write(data2);  
+    } else {
+      SPI.write(0x00);  
+      SPI.write(data1);
+    }
+    
+    digitalWrite(dcs_pin, HIGH);  //data_mode_off() does not seem to work here
+
+}
+
 void VS1053::stopSong() {
     uint16_t modereg; // Read from mode register
     int i;            // Loop control

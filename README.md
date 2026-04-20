@@ -51,11 +51,11 @@ Then initialize the player and use as in following example:
 
 ```c++
 player.begin();
+player.switchToMp3Mode();
 if (player.getChipVersion() == 4) { // Only perform an update if we really are using a VS1053, not. eg. VS1003
     player.loadDefaultVs1053Patches(); 
 }
 player.setVolume(VOLUME);
-player.switchToMp3Mode();
 player.playChunk(sampleMp3, sizeof(sampleMp3));
 ```
     

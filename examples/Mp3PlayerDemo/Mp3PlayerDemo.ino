@@ -74,13 +74,13 @@ void setup() {
     // initialize SPI
     SPI.begin();
 
-    Serial.println("Hello VS1053!\n");
+    Serial.println("Hello VS1003/53!");
     // initialize a player
     player.begin();
+    player.switchToMp3Mode(); // optional, some boards require this    
     if (player.getChipVersion() == 4) { // Only perform an update if we really are using a VS1053, not. eg. VS1003
         player.loadDefaultVs1053Patches(); 
     }
-    player.switchToMp3Mode(); // optional, some boards require this
     player.setVolume(VOLUME);
 }
 

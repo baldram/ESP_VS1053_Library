@@ -101,10 +101,10 @@ void setup() {
     SPI.begin();
 
     player.begin();
+    player.switchToMp3Mode();    
     if (player.getChipVersion() == 4) { // Only perform an update if we really are using a VS1053, not. eg. VS1003
         player.loadDefaultVs1053Patches(); 
     }
-    player.switchToMp3Mode();
     player.setVolume(VOLUME);
 
     Serial.print("Connecting to SSID ");

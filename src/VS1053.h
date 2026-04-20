@@ -139,7 +139,10 @@ public:
 
     // Play a chunk of data.  Copies the data to the chip.  Blocks until complete
     void playChunk(uint8_t *data, size_t len);
-
+    
+    // performs a MIDI command
+    void sendMidiMessage(uint8_t cmd, uint8_t data1, uint8_t data2);    
+	
     // Finish playing a song. Call this after the last playChunk call
     void stopSong();
 

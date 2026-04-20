@@ -97,6 +97,15 @@ protected:
         }
     }
 
+    // min CLKI is 12MHZ, max time until dreq high is 450CLKI (data sheet p. 38)
+    // => dreq timeout 50ms is on the safe side
+    inline void await_data_request_with_timeout(uint32_t timeoutMs = 50) const {
+        uint32_t absTimeoutMs = millis() + timeoutMs;
+        while (!digitalRead(dreq_pin) && absTimeoutMs < millis()) {
+            yield();
+        }
+    }
+
     inline void control_mode_on() const {
         SPI.beginTransaction(VS1053_SPI);   // Prevent other SPI users
         digitalWrite(dcs_pin, HIGH);        // Bring slave in control mode

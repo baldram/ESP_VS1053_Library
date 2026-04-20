@@ -40,22 +40,24 @@ uint16_t VS1053::readRegister(uint8_t _reg) const {
     uint16_t result;
 
     control_mode_on();
-    SPI.write(3);    // Read operation
-    SPI.write(_reg); // Register to read (0..0xF)
+    await_data_request_with_timeout();
+    spi_write(3);    // Read operation
+    spi_write(_reg); // Register to read (0..0xF)
     // Note: transfer16 does not seem to work
     result = (SPI.transfer(0xFF) << 8) | // Read 16 bits data
              (SPI.transfer(0xFF));
-    await_data_request(); // Wait for DREQ to be HIGH again
+    await_data_request_with_timeout(); // Wait for DREQ to be HIGH again
     control_mode_off();
     return result;
 }
 
 void VS1053::writeRegister(uint8_t _reg, uint16_t _value) const {
     control_mode_on();
-    SPI.write(2);        // Write operation
-    SPI.write(_reg);     // Register to write (0..0xF)
-    SPI.write16(_value); // Send 16 bits data
-    await_data_request();
+    await_data_request_with_timeout();
+    spi_write(2);        // Write operation
+    spi_write(_reg);     // Register to write (0..0xF)
+    spi_write16(_value); // Send 16 bits data
+    await_data_request_with_timeout();
     control_mode_off();
 }
 

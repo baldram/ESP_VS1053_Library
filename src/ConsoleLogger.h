@@ -22,6 +22,8 @@
         #define LOG(...) ESP_LOGD("ESP_VS1053", __VA_ARGS__)
     #elif defined(ARDUINO_ARCH_ESP8266) && defined(DEBUG_ESP_PORT)
         #define LOG(...) DEBUG_ESP_PORT.printf(__VA_ARGS__)
+    #elif defined(ARDUINO_ARCH_RP2040) && defined(DEBUG_RP2040_PORT) && defined(DEBUG_VS1053)
+        #define LOG(...) DEBUG_RP2040_PORT.printf(__VA_ARGS__)
     #else
         #define LOG(...)
     #endif
